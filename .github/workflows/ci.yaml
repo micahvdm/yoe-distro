@@ -26,6 +26,25 @@ jobs:
       - name: Setup
         run: |
           apt-get install -y chrpath diffstat
+          dpkg --add-architecture i386
+          apt-get update && \
+        	apt-get install -yq sudo build-essential git-core git-lfs \
+            python3 man bash diffstat gawk chrpath wget cpio \
+            texinfo lzop apt-utils bc screen tmux libncurses5-dev locales \
+            libc6-dev-i386 doxygen libssl-dev dos2unix xvfb x11-utils \
+            g++-multilib libssl-dev:i386 libcrypto++-dev:i386 zlib1g-dev:i386 \
+            libtool libtool-bin procps python3-distutils pigz socat \
+            python3-jinja2 python3-pip python3-pexpect lz4 zstd unzip xz-utils \
+            debianutils iputils-ping python3-git pylint python3-subunit \
+            iproute2 curl iptables binfmt-support qemu-user-static && \
+        	apt-get -yq upgrade && \
+        	rm -rf /var/lib/apt-lists/* && \
+        	dpkg-divert --remove --no-rename /usr/share/man/man1/sh.1.gz && \
+        	dpkg-divert --remove --no-rename /bin/sh && \
+        	ln -sf bash.1.gz /usr/share/man/man1/sh.1.gz && \
+        	ln -sf bash /bin/sh && \
+        	dpkg-divert --add --local --no-rename /usr/share/man/man1/sh.1.gz && \
+        	dpkg-divert --add --local --no-rename /bin/sh
           export DOCKER_REPO=none
           export LANG=en_US.UTF-8
           export SSTATE_CACHE_DIR=/scratch/sstate-cache
